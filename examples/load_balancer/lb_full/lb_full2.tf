@@ -299,6 +299,7 @@ resource "oci_load_balancer" "lb1" {
   subnet_ids = [
     "${oci_core_subnet.subnet1.id}",
     "${oci_core_subnet.subnet2.id}",
+    "${oci_core_subnet.subnet3.id}",
   ]
 
   display_name = "lb1"
