@@ -119,7 +119,7 @@ resource "oci_core_subnet" "subnet3" {
    
 resource "oci_core_subnet" "subnet4" {
   availability_domain = "${data.oci_identity_availability_domain.ad1.name}"
-  cidr_block          = "10.1.20.1/24"
+  cidr_block          = "10.1.23.1/24"
   display_name        = "subnet4"
   dns_label           = "subnet4"
   security_list_ids   = ["${oci_core_security_list.securitylist1.id}"]
@@ -127,6 +127,24 @@ resource "oci_core_subnet" "subnet4" {
   vcn_id              = "${oci_core_vcn.vcn1.id}"
   route_table_id      = "${oci_core_route_table.routetable1.id}"
   dhcp_options_id     = "${oci_core_vcn.vcn1.default_dhcp_options_id}"
+  prohibit_public_ip_on_vnic = true
+
+  provisioner "local-exec" {
+    command = "sleep 5"
+  }
+}
+      
+resource "oci_core_subnet" "subnet5" {
+  availability_domain = "${data.oci_identity_availability_domain.ad2.name}"
+  cidr_block          = "10.1.24.1/24"
+  display_name        = "subnet5"
+  dns_label           = "subnet5"
+  security_list_ids   = ["${oci_core_security_list.securitylist1.id}"]
+  compartment_id      = "${var.compartment_ocid}"
+  vcn_id              = "${oci_core_vcn.vcn1.id}"
+  route_table_id      = "${oci_core_route_table.routetable1.id}"
+  dhcp_options_id     = "${oci_core_vcn.vcn1.default_dhcp_options_id}"
+  prohibit_public_ip_on_vnic = true
 
   provisioner "local-exec" {
     command = "sleep 5"
@@ -225,6 +243,26 @@ resource "oci_core_instance" "instance2" {
   }
 }
 
+resource "oci_core_instance" "instance3" {
+  availability_domain = "${data.oci_identity_availability_domain.ad3.name}"
+  compartment_id      = "${var.compartment_ocid}"
+  display_name        = "be-instance3"
+  shape               = "${var.instance_shape}"
+
+  metadata = {
+    user_data = "${base64encode(var.user-data)}"
+  }
+
+  create_vnic_details {
+    subnet_id      = "${oci_core_subnet.subnet3.id}"
+    hostname_label = "be-instance3"
+  }
+
+  source_details {
+    source_type = "image"
+    source_id   = "${var.instance_image_ocid[var.region]}"
+  }
+}
 variable "user-data" {
   default = <<EOF
 #!/bin/bash -x
