@@ -122,10 +122,10 @@ resource "oci_core_subnet" "subnet4" {
   cidr_block          = "10.1.23.1/24"
   display_name        = "subnet4"
   dns_label           = "subnet4"
-  security_list_ids   = ["${oci_core_security_list.securitylist1.id}"]
+  security_list_ids   = ["${oci_core_vcn.vcn1.default_security_list_id}"]
   compartment_id      = "${var.compartment_ocid}"
   vcn_id              = "${oci_core_vcn.vcn1.id}"
-  route_table_id      = "${oci_core_route_table.routetable1.id}"
+  route_table_id      = "${oci_core_vcn.vcn1.default_route_table_id}"
   dhcp_options_id     = "${oci_core_vcn.vcn1.default_dhcp_options_id}"
   prohibit_public_ip_on_vnic = true
 
@@ -139,10 +139,10 @@ resource "oci_core_subnet" "subnet5" {
   cidr_block          = "10.1.24.1/24"
   display_name        = "subnet5"
   dns_label           = "subnet5"
-  security_list_ids   = ["${oci_core_security_list.securitylist1.id}"]
+  security_list_ids   = ["${oci_core_vcn.vcn1.default_security_list_id}"]
   compartment_id      = "${var.compartment_ocid}"
   vcn_id              = "${oci_core_vcn.vcn1.id}"
-  route_table_id      = "${oci_core_route_table.routetable1.id}"
+  route_table_id      = "${oci_core_vcn.vcn1.default_route_table_id}"
   dhcp_options_id     = "${oci_core_vcn.vcn1.default_dhcp_options_id}"
   prohibit_public_ip_on_vnic = true
 
