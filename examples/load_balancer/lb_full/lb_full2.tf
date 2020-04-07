@@ -56,6 +56,10 @@ data "oci_identity_availability_domain" "ad2" {
   ad_number      = 2
 }
 
+data "oci_identity_availability_domain" "ad3" {
+  compartment_id = "${var.tenancy_ocid}"
+  ad_number      = 3
+}
 /* Network */
 
 resource "oci_core_vcn" "vcn1" {
@@ -97,6 +101,37 @@ resource "oci_core_subnet" "subnet2" {
   }
 }
 
+resource "oci_core_subnet" "subnet3" {
+  availability_domain = "${data.oci_identity_availability_domain.ad3.name}"
+  cidr_block          = "10.1.22.0/24"
+  display_name        = "subnet3"
+  dns_label           = "subnet3"
+  security_list_ids   = ["${oci_core_security_list.securitylist1.id}"]
+  compartment_id      = "${var.compartment_ocid}"
+  vcn_id              = "${oci_core_vcn.vcn1.id}"
+  route_table_id      = "${oci_core_route_table.routetable1.id}"
+  dhcp_options_id     = "${oci_core_vcn.vcn1.default_dhcp_options_id}"
+
+  provisioner "local-exec" {
+    command = "sleep 5"
+  }
+}
+   
+resource "oci_core_subnet" "subnet4" {
+  availability_domain = "${data.oci_identity_availability_domain.ad1.name}"
+  cidr_block          = "10.1.20.1/24"
+  display_name        = "subnet4"
+  dns_label           = "subnet4"
+  security_list_ids   = ["${oci_core_security_list.securitylist1.id}"]
+  compartment_id      = "${var.compartment_ocid}"
+  vcn_id              = "${oci_core_vcn.vcn1.id}"
+  route_table_id      = "${oci_core_route_table.routetable1.id}"
+  dhcp_options_id     = "${oci_core_vcn.vcn1.default_dhcp_options_id}"
+
+  provisioner "local-exec" {
+    command = "sleep 5"
+  }
+}
 resource "oci_core_internet_gateway" "internetgateway1" {
   compartment_id = "${var.compartment_ocid}"
   display_name   = "internetgateway1"
