@@ -119,7 +119,7 @@ resource "oci_core_subnet" "subnet3" {
    
 resource "oci_core_subnet" "subnet4" {
   availability_domain = "${data.oci_identity_availability_domain.ad1.name}"
-  cidr_block          = "10.1.23.1/24"
+  cidr_block          = "10.1.23.0/24"
   display_name        = "subnet4"
   dns_label           = "subnet4"
   security_list_ids   = ["${oci_core_vcn.vcn1.default_security_list_id}"]
@@ -136,7 +136,7 @@ resource "oci_core_subnet" "subnet4" {
       
 resource "oci_core_subnet" "subnet5" {
   availability_domain = "${data.oci_identity_availability_domain.ad2.name}"
-  cidr_block          = "10.1.24.1/24"
+  cidr_block          = "10.1.24.0/24"
   display_name        = "subnet5"
   dns_label           = "subnet5"
   security_list_ids   = ["${oci_core_vcn.vcn1.default_security_list_id}"]
