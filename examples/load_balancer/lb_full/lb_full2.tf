@@ -424,6 +424,16 @@ resource "oci_load_balancer_backend" "lb-be2" {
   weight           = 1
 }
 
+resource "oci_load_balancer_backend" "lb-be3" {
+  load_balancer_id = "${oci_load_balancer.lb1.id}"
+  backendset_name  = "${oci_load_balancer_backend_set.lb-bes1.name}"
+  ip_address       = "${oci_core_instance.instance3.private_ip}"
+  port             = 80
+  backup           = false
+  drain            = false
+  offline          = false
+  weight           = 1
+}
 resource "oci_load_balancer_rule_set" "test_rule_set" {
   items {
     action = "ADD_HTTP_REQUEST_HEADER"
